@@ -1,0 +1,16 @@
+y -> yearly
+m -> monthly
+d -> daily
+p -> pattern (every x days/months/weeks)
+
+secondary
+
+p:
+    ,d7 (every 7 days)
+    ,m2 (every 2 months)
+    etc.
+
+all:
+    ,c4 (constrained day 4 -> thursday. Finds week and then gets first thursday)
+    ,w (weekdays)
+    ,i (ignore weekends when counting)
