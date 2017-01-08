@@ -26,36 +26,25 @@ bool timeObject::setObject(timeObject *toCopy)
     return true;
 }
 
-timeObject::timeObject(int toParse, timeObject *toCopy)
+timeObject::timeObject(int toParse)
 {
-    if(toParse != 0)
-    {
-        time_t timeStampTime = toParse;
-        std::string timeString = ctime(&timeStampTime);
+    time_t timeStampTime = toParse;
+    std::string timeString = ctime(&timeStampTime);
         
-        std::string sections[5];
-        std::string sections2[3];
-        
-        splitString(sections, timeString, ' ');
-        splitString(sections2, sections[3], ':');
-        
-        day = stoi(sections[2]);
-        dayIndex = findInArray(dayNamesShort, sections[0], 7);
-        month = findInArray(monthNamesShort, sections[1], 12);
-        year = stoi(sections[4]);
-        
-        second = stoi(sections2[2]);
-        minute = stoi(sections2[1]);
-        hour = stoi(sections2[0]);
-    } else
-        setObject(toCopy);
-        //get week day
-        time_t timeStampTime = getUnixTimestamp();
-        std::string timeString = ctime(&timeStampTime);
-        
-        std::string sections[5];
-        splitString(sections, timeString, ' ');
-        dayIndex = findInArray(dayNamesShort, sections[0], 7);
+    std::string sections[5];
+    std::string sections2[3];
+    
+    splitString(sections, timeString, ' ');
+    splitString(sections2, sections[3], ':');
+    
+    day = stoi(sections[2]);
+    dayIndex = findInArray(dayNamesShort, sections[0], 7);
+    month = findInArray(monthNamesShort, sections[1], 12);
+    year = stoi(sections[4]);
+    
+    second = stoi(sections2[2]);
+    minute = stoi(sections2[1]);
+    hour = stoi(sections2[0]);
 }
 
 int timeObject::getUnixTimestamp()
@@ -74,4 +63,32 @@ int timeObject::getUnixTimestamp()
 std::string timeObject::getDate()
 {
     return dayNames[dayIndex] + " " + std::to_string(day) + " " + monthNames[month] + " " + std::to_string(year);
+}
+
+void timeObject::addMonth(int toAdd)
+{
+    month += toAdd;
+    
+    if(month < 0)
+        year--;
+    
+    year += month / 12;
+    month = month % 12;
+}
+
+void timeObject::addDay(int toAdd)
+{
+    day += toAdd;
+    
+    while(day <= 0)
+    {
+        addMonth(-1);
+        day += monthDayLength[month];
+    }
+    
+    while(day > monthDayLength[month])
+    {
+        day -= monthDayLength[month];
+        addMonth(1);
+    }
 }

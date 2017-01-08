@@ -6,7 +6,7 @@
 int main()
 {
     Event moo("Party", 1477717458, 1477789458,  "My birthday");
-    moo.propagateEvent(1262304000, 1920070400, "y");
+    moo.propagateEvent(1475125457, 1479225600, "d");
     moo.printEvents();
     
     return 0;

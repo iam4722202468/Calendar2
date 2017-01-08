@@ -8,7 +8,7 @@ static std::string dayNamesShort[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", 
 
 static std::string monthNames[] = {"January","February","March","April","May","June","July","August","September","October","November","December"};
 
-static std::string monthNamesShort[] = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"};
+static std::string monthNamesShort[] = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
 static int monthDayLength[] = {31,28,31,30,31,30,31,31,30,31,30,31};
 
 //minute, hour, day, week, year
@@ -25,10 +25,14 @@ class timeObject {
         int minute;
         int hour;
         
-        timeObject(int toParse = 0, timeObject *toCopy = NULL);
+        timeObject(int toParse = 0);
         bool setObject(timeObject *toCopy);
         int getUnixTimestamp();
         std::string getDate();
+        
+        void addMonth(int toAdd);
+        void addDay(int toAdd);
+        
 };
 
 #endif
