@@ -22,7 +22,10 @@ class propagateObjectRules
                     if(foundBeginning)
                         secondary.push_back(tempString);
                     else
+                    {
                         repeatType = tempString;
+                        foundBeginning = true;
+                    }
                     tempString = "";
                 }
                 else

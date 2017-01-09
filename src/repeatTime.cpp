@@ -11,8 +11,15 @@ propagateObject::propagateObject(timeObject *startTime, std::vector<timeObject*>
     //std::cout << "Object propagation complete\n";
 }
 
-void getTimeObject(timeObject &iterateTime, std::string repeatType, bool direction)
+void alignDay(timeObject &iterateTime, char alignTo)
 {
+    std::cout << alignTo << std::endl;
+}
+
+void getTimeObject(timeObject &iterateTime, propagateObjectRules &thisPropagateObject, bool direction)
+{
+    std::string repeatType = thisPropagateObject.repeatType;
+    
     if(repeatType == "y")
     {
         if(direction == 0)
@@ -34,6 +41,20 @@ void getTimeObject(timeObject &iterateTime, std::string repeatType, bool directi
         else
             iterateTime.addDay(-1);
     }
+    else if(repeatType == "p")
+    {
+        for(int i = 0; i < thisPropagateObject.secondary.size(); ++i)
+            if(thisPropagateObject.secondary.at(i) == "d7")
+                if(direction == 0)
+                    iterateTime.addDay(7);
+                else
+                    iterateTime.addDay(-7);
+    }
+    
+    for(int i = 0; i < thisPropagateObject.secondary.size(); ++i)
+        if(thisPropagateObject.secondary.at(i)[0] == 'a')
+            alignDay(iterateTime, thisPropagateObject.secondary.at(i)[0]);
+    
 }
 
 bool propagateObject::addRule(int startTime, int endTime, std::string propagateRule)
@@ -46,7 +67,6 @@ bool propagateObject::addRule(int startTime, int endTime, std::string propagateR
     eventVector->clear();
     
     timeObject iterateTime(eventStartTime->getUnixTimestamp());
-    
     myRules.push_back(new propagateObjectRules(propagateRule));
     
     int testingTime;
@@ -61,7 +81,7 @@ bool propagateObject::addRule(int startTime, int endTime, std::string propagateR
         {
             testingTime = iterateTime.getUnixTimestamp();
             eventVector->push_back(new timeObject(testingTime));
-            getTimeObject(iterateTime, myRules.at(i)->repeatType, 0);
+            getTimeObject(iterateTime, *myRules.at(i), 0);
         }
         
         //remove first date
@@ -86,7 +106,7 @@ bool propagateObject::addRule(int startTime, int endTime, std::string propagateR
         {
             testingTime = iterateTime.getUnixTimestamp();
             eventVector->push_back(new timeObject(testingTime));
-            getTimeObject(iterateTime, myRules.at(i)->repeatType, 1);
+            getTimeObject(iterateTime, *myRules.at(i), 1);
         }
         
         //remove extra date at beginning

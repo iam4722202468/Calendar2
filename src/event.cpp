@@ -16,6 +16,7 @@ Event::Event(std::string eventName, int _startTime, int _endTime, std::string ev
 bool Event::propagateEvent(int startTime, int endTime, std::string repeatRule)
 {
     propagateThis->addRule(startTime, endTime, repeatRule);
+    return true;
 }
 
 void Event::printEvents()

@@ -25,14 +25,13 @@ class timeObject {
         int minute;
         int hour;
         
-        timeObject(int toParse = 0);
+        timeObject(int toParse);
         bool setObject(timeObject *toCopy);
         int getUnixTimestamp();
         std::string getDate();
         
         void addMonth(int toAdd);
         void addDay(int toAdd);
-        
 };
 
 #endif
